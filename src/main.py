@@ -15,6 +15,7 @@ from PIL import Image
 from pypdf import PdfReader
 
 ENCODING = "utf-8"
+OCR_LANGUAGE = "swe"
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -48,14 +49,15 @@ def _extract_with_ocr(pdf_path: Path) -> str:
         document = pymupdf.open(str(pdf_path))
         pages = []
         for page_number in range(1, len(document) + 1):
-            page = document[page_number - 1]
+            page = document.load_page(page_number - 1)
             # Render at 2x resolution to give Tesseract enough detail for
             # small document text while keeping OCR processing reasonable.
             image = page.get_pixmap(matrix=pymupdf.Matrix(2, 2), alpha=False)
             # pytesseract accepts a PIL image, not the raw PNG bytes returned
             # by PyMuPDF.
             pil_image = Image.open(BytesIO(image.tobytes("png")))
-            text = pytesseract.image_to_string(pil_image).strip()
+            text = pytesseract.image_to_string(
+                pil_image, lang=OCR_LANGUAGE).strip()
             pages.append(f"--- Page {page_number} ---\n{text}".rstrip())
     except pytesseract.pytesseract.TesseractNotFoundError as exc:
         raise RuntimeError(
