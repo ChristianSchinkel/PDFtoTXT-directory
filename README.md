@@ -1,14 +1,16 @@
 # PDFtoTXT-directory
 
-Place PDF files in `resources/`, including any nested folders, and run:
+Place PDF files in the repository's `resources/` directory, including any
+nested folders, and run:
 
 ```bash
 ./app.py
 ```
 
-Each PDF is converted to a `.txt` file in `data/` with the same relative
-folder structure. For example, `resources/contracts/a.pdf` becomes
-`data/contracts/a.txt`.
+Each PDF is converted to a `.txt` file in the repository's `data/` directory
+with the same relative folder structure. For example,
+`resources/contracts/a.pdf` becomes `data/contracts/a.txt`. These repository
+paths are used even if the application is launched from another directory.
 
 An explicit PDF or directory can also be supplied:
 

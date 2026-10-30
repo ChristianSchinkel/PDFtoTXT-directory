@@ -15,6 +15,7 @@ from PIL import Image
 from pypdf import PdfReader
 
 ENCODING = "utf-8"
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def extract_text(pdf_path: Path, *, ocr: bool = True) -> str:
@@ -72,7 +73,9 @@ def _extract_with_ocr(pdf_path: Path) -> str:
 
 def _pdf_files(input_path: Path) -> tuple[Path, Path, Iterable[Path]]:
     """Return the input root, output root, and PDFs to process."""
-    output_root = Path("data")
+    if not input_path.is_absolute():
+        input_path = PROJECT_ROOT / input_path
+    output_root = PROJECT_ROOT / "data"
     if input_path.is_file():
         if input_path.suffix.lower() != ".pdf":
             raise ValueError(f"Input file is not a PDF: {input_path}")
@@ -121,7 +124,7 @@ def main(argv: list[str] | None = None) -> int:
         "input",
         type=Path,
         nargs="?",
-        default=Path("resources"),
+        default=PROJECT_ROOT / "resources",
         help=help_text,
     )
     parser.add_argument(
