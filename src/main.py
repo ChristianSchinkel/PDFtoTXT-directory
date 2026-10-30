@@ -1,4 +1,5 @@
-"""Convert PDF files to text."""
+"""Convert a PDF file to plain text."""
+
 
 from __future__ import annotations
 
