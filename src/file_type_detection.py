@@ -13,8 +13,16 @@ def get_file_type(file_path: str | PathLike[str]) -> str:
 
     if suffix == ".pdf":
         return "pdf"
-    if suffix in {".doc", ".docx"}:
+    if suffix in {".doc",
+                  ".docx"}:
         return "word"
-    if suffix in {".bmp", ".gif", ".jpeg", ".jpg", ".png", ".tif", ".tiff", ".webp"}:
+    if suffix in {".bmp",
+                  ".gif",
+                  ".jpeg",
+                  ".jpg",
+                  ".png",
+                  ".tif",
+                  ".tiff",
+                  ".webp"}:
         return "image"
     return "unsupported"
