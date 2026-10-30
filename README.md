@@ -1,5 +1,20 @@
 # PDFtoTXT-directory
-Given directory and several subdirectories, convert PDFs, Word, and images into a mirrored directory txt file structure. The Program imports, typer, rich, pypdf, pymupdf, and pytesseract.
+
+Place PDF files in `resources/`, including any nested folders, and run:
+
+```bash
+./app.py
+```
+
+Each PDF is converted to a `.txt` file in `data/` with the same relative
+folder structure. For example, `resources/contracts/a.pdf` becomes
+`data/contracts/a.txt`.
+
+An explicit PDF or directory can also be supplied:
+
+```bash
+./app.py resources/contracts
+```
 
 `src.file_type_detection.get_file_type(file_path)` classifies a file as `pdf`, `word`, `image`,
 or `unsupported` based on its extension. Extensions are matched

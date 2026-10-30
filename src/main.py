@@ -19,6 +19,9 @@ ENCODING = "utf-8"
 
 def extract_text(pdf_path: Path, *, ocr: bool = True) -> str:
     """Extract text from a PDF, using OCR when the PDF has no text layer."""
+    if pdf_path.stat().st_size == 0:
+        raise ValueError(f"PDF file is empty: {pdf_path}")
+
     reader = PdfReader(str(pdf_path))
     pages: list[str] = []
     for page_number, page in enumerate(reader.pages, start=1):
@@ -103,15 +106,24 @@ def convert(input_path: Path, *, ocr: bool = True) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     """Parse command-line arguments and convert PDFs."""
-    dscrpt = "Convert one PDF or a folder of PDFs into text files under data/."
-    help_text = "Path to a PDF file or a folder containing PDF files."
+    dscrpt = (
+        "Convert one PDF or all PDFs below a folder into text files under "
+        "data/. Defaults to resources/."
+    )
+    help_text = "Path to a PDF file or folder (default: resources/)."
     # Parse command-line arguments
     if argv is None:
         argv = sys.argv[1:]  # Exclude the script name from the arguments
     parser = argparse.ArgumentParser(
         description=dscrpt  # Description of the command-line tool
     )
-    parser.add_argument("input", type=Path, help=help_text)
+    parser.add_argument(
+        "input",
+        type=Path,
+        nargs="?",
+        default=Path("resources"),
+        help=help_text,
+    )
     parser.add_argument(
         "--no-ocr",
         action="store_true",
